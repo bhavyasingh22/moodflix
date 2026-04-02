@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MoodFlix</title>
+
+<!-- ============================================================
+     GOOGLE FONTS — CSS-ONLY ADDITION
+     ============================================================ -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'DM Sans', sans-serif;
+}
+
+/* ============================================================
+   CSS VARIABLES
+   ============================================================ */
+:root{
+  --neon:    #7df9ff;
+  --neon-dim: rgba(125,249,255,0.18);
+  --neon-glow: 0 0 12px #7df9ff, 0 0 40px rgba(125,249,255,0.4);
+  --glass-bg: rgba(8, 8, 20, 0.55);
+  --glass-border: rgba(125,249,255,0.12);
+}
+
+/* ============================================================
+   BACKGROUND
+   Cinematic dark theater — Unsplash film-reel still
+   ============================================================ */
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  overflow:hidden;
+
+  /* Dramatic three-stop gradient overlay */
+  background:
+    linear-gradient(160deg,
+      rgba(0,0,0,0.82) 0%,
+      rgba(5,5,18,0.70) 50%,
+      rgba(0,0,0,0.90) 100%),
+    url("https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1800&q=80")
+    center/cover no-repeat fixed;
+
+  animation: zoomBg 24s ease-in-out infinite alternate;
+
+  /* Subtle vignette */
+  box-shadow: inset 0 0 200px rgba(0,0,0,0.8);
+}
+
+/* Grain overlay for cinematic texture */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:0.35;
+}
+
+/* ============================================================
+   ZOOM EFFECT
+   ============================================================ */
+@keyframes zoomBg{
+  from{ background-size:100% auto; }
+  to{   background-size:112% auto; }
+}
+
+/* ============================================================
+   CONTAINER — premium glassmorphism card
+   ============================================================ */
+.container{
+  position:relative;
+  z-index:1;
+  text-align:center;
+
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 72px 80px;
+  border-radius: 28px;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+
+  box-shadow:
+    0 0 0 1px rgba(125,249,255,0.06),
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 80px rgba(125,249,255,0.05) inset;
+
+  animation: riseIn 1.6s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Subtle top-edge highlight */
+.container::before{
+  content:'';
+  position:absolute;
+  top:0; left:10%; right:10%;
+  height:1px;
+  background: linear-gradient(90deg, transparent, rgba(125,249,255,0.5), transparent);
+  border-radius:50%;
+}
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+h1{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 88px;
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+  color: var(--neon);
+  text-shadow: var(--neon-glow);
+
+  animation: titlePulse 4s ease-in-out infinite;
+}
+
+/* ============================================================
+   SUBTEXT
+   ============================================================ */
+p{
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 48px;
+}
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+button{
+  position:relative;
+  padding: 16px 52px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1.5px solid var(--neon);
+  border-radius: 50px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--neon);
+  overflow: hidden;
+  transition: color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Fill sweep on hover */
+button::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background: var(--neon);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+  z-index:0;
+}
+
+button span{
+  position:relative;
+  z-index:1;
+}
+
+button:hover{
+  color: #0a0a18;
+  box-shadow: var(--neon-glow);
+}
+
+button:hover::before{
+  transform: scaleX(1);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes riseIn{
+  from{ opacity:0; transform:translateY(36px) scale(0.97); }
+  to{   opacity:1; transform:translateY(0)    scale(1);    }
+}
+
+@keyframes titlePulse{
+  0%,100%{ text-shadow: var(--neon-glow); }
+  50%{     text-shadow: 0 0 8px #7df9ff, 0 0 60px rgba(125,249,255,0.6); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>MoodFlix 🎬</h1>
+
+<p>Movie Recommendation Based On Your Mood</p>
+
+<button onclick="goLogin()"><span>Get Started</span></button>
+
+</div>
+
+<script>
+
+function goLogin(){
+  window.location.href="login.html";
+}
+
+</script>
+
+</body>
+</html>
