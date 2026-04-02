@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MoodFlix</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --neon:      #7df9ff;
+  --neon-glow: 0 0 12px #7df9ff, 0 0 40px rgba(125,249,255,0.4);
+  --glass-bg:  rgba(8,8,20,0.55);
+  --glass-bdr: rgba(125,249,255,0.12);
+  --dark:      #0a0a18;
+}
+
+/* RESET */
+*{
+  margin:0; padding:0;
+  box-sizing:border-box;
+  font-family:'DM Sans', sans-serif;
+}
+
+/* BODY */
+body{
+  min-height:100vh;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow-x:hidden;
+
+  background:
+    linear-gradient(160deg,
+      rgba(0,0,0,0.82) 0%,
+      rgba(5,5,18,0.70) 50%,
+      rgba(0,0,0,0.90) 100%),
+    url("https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1800&q=80")
+    center/cover no-repeat fixed;
+
+  animation: zoomBg 24s ease-in-out infinite alternate;
+}
+
+body::before{
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.35;
+}
+
+@keyframes zoomBg{
+  from{ background-size:100% auto; }
+  to{   background-size:112% auto; }
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed; top:0; left:0;
+  width:100%; z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 60px;
+  background: rgba(5,5,18,0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(125,249,255,0.08);
+}
+
+.logo{
+  font-family:'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 3px;
+  color: var(--neon);
+  text-shadow: var(--neon-glow);
+}
+
+/* Logout button — pill style */
+.logout{
+  position:relative;
+  background: transparent;
+  border: 1.5px solid var(--neon);
+  padding: 8px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family:'DM Sans', sans-serif;
+  font-weight:500;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color: var(--neon);
+  overflow: hidden;
+  transition: color 0.3s, box-shadow 0.3s;
+}
+
+.logout::before{
+  content:'';
+  position:absolute; inset:0;
+  background: var(--neon);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+  z-index:0;
+}
+
+.logout span{ position:relative; z-index:1; }
+
+.logout:hover{
+  color: var(--dark);
+  box-shadow: var(--neon-glow);
+}
+.logout:hover::before{ transform:scaleX(1); }
+
+/* HERO */
+.hero{
+  position:relative; z-index:1;
+  text-align:center;
+  margin-top:150px;
+  padding-bottom:60px;
+}
+
+.hero h1{
+  font-family:'Bebas Neue', sans-serif;
+  font-size: 80px;
+  letter-spacing: 5px;
+  margin-bottom: 12px;
+  color: white;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.8);
+  animation: fadeDown 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+
+.hero p{
+  color: rgba(255,255,255,0.45);
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform:uppercase;
+  margin-bottom: 60px;
+  animation: fadeIn 1.6s ease both;
+}
+
+/* MOOD CONTAINER */
+.mood-container{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 0 40px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* MOOD BUTTONS */
+button{
+  position:relative;
+  padding: 22px 18px;
+  border: 1px solid rgba(125,249,255,0.2);
+  border-radius: 18px;
+  background: rgba(8,8,20,0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: white;
+  font-size: 17px;
+  font-family:'DM Sans', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Stagger float delays for each card */
+.mood-container button:nth-child(1){ animation-delay:0s; }
+.mood-container button:nth-child(2){ animation-delay:0.4s; }
+.mood-container button:nth-child(3){ animation-delay:0.8s; }
+.mood-container button:nth-child(4){ animation-delay:1.2s; }
+.mood-container button:nth-child(5){ animation-delay:1.6s; }
+.mood-container button:nth-child(6){ animation-delay:2.0s; }
+
+/* Shimmer sweep on hover */
+button::after{
+  content:'';
+  position:absolute;
+  top:0; left:-100%;
+  width:60%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(125,249,255,0.12), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+
+button:hover{
+  border-color: var(--neon);
+  box-shadow: 0 0 18px rgba(125,249,255,0.25), 0 12px 40px rgba(0,0,0,0.6);
+  transform: translateY(-10px) scale(1.04);
+  animation-play-state: paused;
+}
+
+button:hover::after{
+  left:160%;
+}
+
+/* ANIMATIONS */
+@keyframes float{
+  0%,100%{ transform:translateY(0); }
+  50%{     transform:translateY(-12px); }
+}
+
+@keyframes fadeDown{
+  from{ opacity:0; transform:translateY(-36px); }
+  to{   opacity:1; transform:translateY(0); }
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; }
+  to{   opacity:1; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">MoodFlix 🎬</div>
+  <button class="logout" onclick="logout()"><span>Logout</span></button>
+</div>
+
+<div class="hero">
+  <h1>Select Your Mood</h1>
+  <p>Get movie recommendations based on your mood</p>
+
+  <div class="mood-container">
+    <button onclick="sendMood('happy')">😊 Happy</button>
+    <button onclick="sendMood('sad')">😢 Sad</button>
+    <button onclick="sendMood('romantic')">❤️ Romantic</button>
+    <button onclick="sendMood('excited')">🔥 Excited</button>
+    <button onclick="sendMood('depressed')">😞 Depressed</button>
+    <button onclick="sendMood('relaxed')">😌 Relaxed</button>
+  </div>
+</div>
+
+<script>
+
+function sendMood(mood){
+  localStorage.setItem("mood", mood);
+  window.location.href = "movies.html";
+}
+
+function logout(){
+  window.location.href="login.html";
+}
+
+</script>
+
+</body>
+</html>
